@@ -1,0 +1,5 @@
+https://forums.unraid.net/topic/71600-unraid-vm-shares/#:~:text=It%20just%20changes,netcfg.yaml%20accordingly.
+
+`ip a` to find name of eth interface, such as enps04
+
+update entry in /etc/netplan/50-cloud-init.yaml to reflect newest value
