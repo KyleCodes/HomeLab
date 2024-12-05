@@ -1,0 +1,12 @@
+One time mounting ex:
+  - sudo mount -t virtiofs Movies /home/your-username/Videos/Movies
+
+Replace /home/your-username/Videos/Movies with your desired mount point. Ensure the directory exists before running the command:
+
+```
+mkdir -p /home/your-username/Videos/Movies
+```
+
+If this works, you will see the contents of /mnt/user/Movies from the Unraid host accessible at /home/your-username/Videos/Movies in your VM.
+
+^ good to actually mount this in a semantically correct place, such as /mnt/Movies
