@@ -10,3 +10,16 @@ mkdir -p /home/your-username/Videos/Movies
 If this works, you will see the contents of /mnt/user/Movies from the Unraid host accessible at /home/your-username/Videos/Movies in your VM.
 
 ^ good to actually mount this in a semantically correct place, such as /mnt/Movies
+
+
+FINAL SOLUTION:
+
+
+```
+# /etc/fstab
+# verify this change works by running `sudo mount -a`
+
+
+Movies /mnt/shares/Movies virtiofs defaults 0 0
+TV /mnt/shares/TV virtiofs defaults 0 0
+```
