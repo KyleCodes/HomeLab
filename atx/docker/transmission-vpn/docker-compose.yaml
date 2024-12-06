@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  vpn:
+    image: dperson/openvpn-client
+    container_name: vpn
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    volumes:
+      - /home/kylemuldoon/appdata/transmission-vpn/vpn:/vpn
+    environment:
+      - OPENVPN_OPTS=--config /vpn/vpn.ovpn --auth-user-pass /vpn/vpn.auth
+    networks:
+      - vpn_network
+    ports:
+      - 9091:9091               # Maps Transmission web UI to host port 9091
+      - 9092:9092
+    restart: unless-stopped
+
+  transmission_movies:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission_movies
+    depends_on:
+      - vpn
+    network_mode: "service:vpn"  # Shares the VPN container's network
+    environment:
+      - PUID=1000                # Replace with your user ID
+      - PGID=1000                # Replace with your group ID
+      - TZ=Etc/UTC               # Replace with your timezone, e.g., "America/Los_Angeles"
+    volumes:
+      - /home/kylemuldoon/appdata/transmission-vpn/transmission/movies:/config
+      - /mnt/shares/Movies:/downloads
+      - /mnt/shares/Movies/Watch:/watch
+    restart: unless-stopped
+
+  transmission_tv:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission_tv
+    depends_on:
+      - vpn
+    network_mode: "service:vpn"  # Shares the VPN container's network
+    environment:
+      - PUID=1000                # Replace with your user ID
+      - PGID=1000                # Replace with your group ID
+      - TZ=Etc/UTC               # Replace with your timezone, e.g., "America/Los_Angeles"
+    volumes:
+      - /home/kylemuldoon/appdata/transmission-vpn/transmission/tv:/config
+      - /mnt/shares/TV:/downloads
+      - /mnt/shares/TV/Watch:/watch
+    restart: unless-stopped
+
+networks:
+  vpn_network:
+    driver: bridge
