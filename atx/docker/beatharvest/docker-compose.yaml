@@ -1,0 +1,12 @@
+version: "5"
+services:
+  music-downloader:
+    image: kyledockerizes/beatharvest
+    container_name: beatharvest
+    volumes:
+      - /mnt/shares/Music/BeatHarvest:/downloads
+      - /home/kylemuldoon/appdata/beatharvest/.env:/app/BeatHarvest/.env
+    environment:
+      - TZ=UTC # Set your timezone
+    restart: unless-stopped
+
